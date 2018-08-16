@@ -1,0 +1,9 @@
+#titleText {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+
+.th {
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}
