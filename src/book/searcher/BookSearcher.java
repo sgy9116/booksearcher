@@ -14,10 +14,11 @@ public class BookSearcher extends Application
     {
         BookSearcher.app = this;
     }
-
+    static Stage mainStage;
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        mainStage = primaryStage;
         primaryStage.setTitle("책 검색 프로그램");
         primaryStage.getIcons().add(new Image("/icon.png"));
         primaryStage.setResizable(false);

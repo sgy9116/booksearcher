@@ -1,21 +1,25 @@
 package book.searcher;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.print.*;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
 
 public class BookSearcherController
 {
@@ -31,12 +35,11 @@ public class BookSearcherController
     public Text titleText, authorsText, translatorsText, publisherText, categoryText, priceText, statusText, contentText;
 
     private ObservableList<Book> history = FXCollections.observableArrayList();
-
+    private Book book;
     @FXML
     public void initialize()
     {
         this.bookStackPane.setVisible(false);
-
         this.historyListView.setItems(this.history);
         this.historyListView.getSelectionModel().selectedItemProperty().addListener((v, o, n) -> {
             this.setBook((Book) n);
@@ -45,6 +48,7 @@ public class BookSearcherController
 
     private void setBook(Book book)
     {
+        this.book = book;
         if (book == null)
         {
             this.bookStackPane.setVisible(false);
@@ -114,6 +118,47 @@ public class BookSearcherController
     @FXML
     public void onPrintButtonClicked()
     {
-        new Alert(Alert.AlertType.INFORMATION, "지이이잉").show();
+        //new Alert(Alert.AlertType.INFORMATION, "지이이잉").show();
+        Label titleLabel = new Label("제목: "+this.book.title);
+        titleLabel.setWrapText(true);
+        Label authorLabel = new Label("저자: "+this.book.authors);
+        Label translatorsLabel = new Label("번역: "+ this.book.translators);
+        Label publisherLabel = new Label("출판: "+this.book.publisher);
+        Label categoryLabel = new Label("카테고리: "+ this.book.category);
+        Label priceLabel = new Label ("가격: "+ this.book.price);
+        TextArea contentText = new TextArea();
+        contentText.setText("내용: \n"+ this.book.content);
+        contentText.setPadding(new Insets(0,240,0,0));
+        contentText.setWrapText(true);
+
+        VBox vbox = new VBox(10,titleLabel, authorLabel, translatorsLabel, publisherLabel, categoryLabel,priceLabel, contentText);
+        vbox.setAlignment(Pos.CENTER_LEFT);
+        pageSetup(vbox, BookSearcher.mainStage);
+    }
+    private void pageSetup(Node node, Stage owner)
+    {
+        PrinterJob job = PrinterJob.createPrinterJob();
+        JobSettings jobSettings = job.getJobSettings();
+        Printer printer = job.getPrinter();
+        PageLayout pageLayout= printer.createPageLayout(Paper.MONARCH_ENVELOPE, PageOrientation.PORTRAIT,
+                1.0,1.0, 1.0,1.0 );
+        jobSettings.setPageLayout(pageLayout);
+
+        boolean proceed = job.showPageSetupDialog(owner);
+        if (proceed)
+        {
+            print(job,node);
+        }
+    }
+
+    private void print(PrinterJob job,Node node)
+    {
+        boolean printed = job.printPage(node);
+
+        if(printed)
+        {
+            this.queryTextField.requestFocus();
+            job.endJob();
+        }
     }
 }

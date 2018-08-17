@@ -35,7 +35,7 @@ public final class KakaoAPI
             if (conn.getResponseCode() != 200)
             {
                 conn.disconnect();
-                return new BookResult("검색 중에 에러가 발생했습니다.");
+                return new BookResult("검색 오류");
             }
 
             try (InputStream is = conn.getInputStream())
