@@ -1,0 +1,7 @@
+package book.searcher;
+
+// 이 파일을 실제 자바파일로 만들어서 사용하세요.
+public final class Constants
+{
+    public static final String KAKAO_API_KEY = "Your API";
+}
