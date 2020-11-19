@@ -6,4 +6,4 @@ using javafx and kakao book search REST api.
 - 신근영
 - Taegyun Kim
 
-[Youtube](https://www.youtube.com/watch?v=5g0HrpW8Gbg)
+[Youtube Demo](https://www.youtube.com/watch?v=5g0HrpW8Gbg)
